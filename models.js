@@ -49,11 +49,13 @@ const ProspectsModel = connection.define('Prospects', {
     },
     firstName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
     },
     lastName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
     },
     email: {
         type: DataTypes.STRING,
@@ -67,7 +69,7 @@ const ProspectsModel = connection.define('Prospects', {
     },
     linkToken: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
     },
     userTypeId: {
