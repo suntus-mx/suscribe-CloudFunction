@@ -1,0 +1,16 @@
+{
+  "name": "suscribe-user-cloud-function",
+  "version": "1.0.0",
+  "description": "Cloud Function to suscribe a user and return questions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "suntus.mx",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.5",
+    "mysql2": "^3.12.0",
+    "sequelize": "^6.37.5"
+  }
+}
