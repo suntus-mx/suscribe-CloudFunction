@@ -73,6 +73,10 @@ const ProspectsModel = connection.define('Prospects', {
     userTypeId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+            key: 'id',
+            model: UserTypesModel
+        }
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -98,7 +102,7 @@ const QuestionsModel = connection.define('Questions', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    answerType: {
+    answerTypeId: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -131,17 +135,6 @@ const AnswersModel = connection.define('Answers', {
     timestamps: false
 });
 
-ProspectsModel.hasMany(UserTypesModel, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
-
-QuestionsModel.hasMany(UserTypesModel, {
-    foreignKey: 'userTypeId',
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
-
 const RefferalsModel = connection.define('Refferals', {
     id: {
         type: DataTypes.INTEGER,
@@ -161,49 +154,24 @@ const RefferalsModel = connection.define('Refferals', {
     timestamps: false
 });
 
-
-UserTypesModel.belongsTo(QuestionsModel);
-
-AnswersModel.hasMany(QuestionsModel, {
-    foreignKey: 'questionId',
+QuestionsModel.hasMany(UserTypesModel, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT'
 });
-
-AnswersModel.hasMany(AnswerTypesModel, {
-    foreignKey: 'answerTypeId',
+QuestionsModel.hasMany(AnswerTypesModel, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT'
 });
-
-AnswersModel.belongsTo(QuestionsModel);
-AnswersModel.belongsTo(AnswerTypesModel);
-
 ProspectsModel.hasMany(UserTypesModel, {
     foreignKey: 'userTypeId',
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT'
 });
-UserTypesModel.belongsTo(ProspectsModel);
 
-RefferalsModel.hasMany(ProspectsModel, {
-    foreignKey: 'prospectId',
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
-RefferalsModel.hasMany(ProspectsModel, {
-    foreignKey: 'refferalId',
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
-
-RefferalsModel.belongsTo(ProspectsModel);
-
-
-ProspectsModel.sync( { force: true });
-UserTypesModel.sync( { force: true });
-QuestionsModel.sync( { force: true });
-AnswerTypesModel.sync( { force : true });
+UserTypesModel.sync();
+AnswerTypesModel.sync();
+QuestionsModel.sync();
+ProspectsModel.sync();
 
 module.exports = {
     UserTypesModel,
