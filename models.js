@@ -65,7 +65,7 @@ const ProspectsModel = connection.define('Prospects', {
     points: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: 0
+        defaultValue: 15
     },
     linkToken: {
         type: DataTypes.STRING,
@@ -103,10 +103,10 @@ const QuestionsModel = connection.define('Questions', {
     userTypeId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-    },
-    answerTypeId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        references: {
+            key: 'id',
+            model: UserTypesModel
+        }
     },
 }, {
     tableName: 'Questions',
@@ -121,13 +121,13 @@ const AnswersModel = connection.define('Answers', {
     },
     questionId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            key: 'id',
+            model: QuestionsModel
+        }
     },
-    answerTypeId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    text: {
+    value: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -156,28 +156,17 @@ const RefferalsModel = connection.define('Refferals', {
     timestamps: false
 });
 
-QuestionsModel.hasMany(UserTypesModel, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
-QuestionsModel.hasMany(AnswerTypesModel, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
-ProspectsModel.hasMany(UserTypesModel, {
-    foreignKey: 'userTypeId',
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT'
-});
 
 UserTypesModel.sync();
 AnswerTypesModel.sync();
 QuestionsModel.sync();
 ProspectsModel.sync();
+AnswersModel.sync();
 
 module.exports = {
     UserTypesModel,
     ProspectsModel,
     QuestionsModel,
-    AnswerTypesModel
+    AnswerTypesModel,
+    AnswersModel
 };
