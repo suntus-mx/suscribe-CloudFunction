@@ -1,9 +1,8 @@
 const functions = require('@google-cloud/functions-framework');
 const connection = require('./database.js');
-const testConnection = require('./helpers.js');
-const saveProspect = require('./database.helpers.js');
+const { saveProspect, getQuestionsbyUserType } = require('./database.helpers.js');
 
-functions.http('suscribe', async (req, res) => {
+functions.http('subscribe', async (req, res) => {
     
     res.set('Access-Control-Allow-Origin', '*');
 
@@ -21,9 +20,17 @@ functions.http('suscribe', async (req, res) => {
                 req.body
             );
 
+            const questions = await getQuestionsbyUserType(
+                req.body.userTypeId
+            );
+
             res.status(200).json({
                 message: 'Prospect saved successfully',
-                data: prospectSaved,
+                data: {
+                    linkToken: '',
+                    prospect: prospectSaved,
+                    questions: questions
+                },
             });
 
         } catch (error) {
